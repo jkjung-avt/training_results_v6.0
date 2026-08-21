@@ -1,5 +1,0 @@
-git+https://github.com/mlcommons/logging.git@6.0.0-rc2
-git+https://github.com/NVIDIA/mlperf-common.git@c02c93c0414071400a10716d9cd5cb8f668b78d4
-megatron-energon==7.2.2
-multi-storage-client<0.26.0
-nvidia-modelopt==0.37.0

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-for i in slurm-*; do echo -ne "$i\t$(getnodefromlog $i)\t$(get-mllruntime $i)\n"; done

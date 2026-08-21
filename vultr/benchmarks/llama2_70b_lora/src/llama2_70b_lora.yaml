@@ -1,4 +1,0 @@
-# Custom MXFP4 LoRA recipe from Primus
-recipe: primus.recipes.llama2_custom
-flavor: llama2_70b_lora_mxfp4_config
-hf_path: meta-llama/Llama-2-70b-hf

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-THIS_SCRIPT_DIR="$(dirname "$(readlink --canonicalize -- "${BASH_SOURCE[0]}")")"
-
-(
-    echo -e "rack_name\tnum_nodes"
-    "${THIS_SCRIPT_DIR}/racks-and-nodes" | cut -f1 | sort | uniq -c | awk -v OFS='\t' '{ print $2, $1 }'
-)

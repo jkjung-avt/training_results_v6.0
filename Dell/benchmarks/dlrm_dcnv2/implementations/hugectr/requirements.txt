@@ -1,3 +1,0 @@
-git+https://github.com/mlcommons/logging.git@6.0.0-rc2
-git+https://github.com/NVIDIA/mlperf-common.git@c02c93c0414071400a10716d9cd5cb8f668b78d4
-mpi4py==4.1.1

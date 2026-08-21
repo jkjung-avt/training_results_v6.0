@@ -1,4 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-
-mv .running_pid .stopping_pid

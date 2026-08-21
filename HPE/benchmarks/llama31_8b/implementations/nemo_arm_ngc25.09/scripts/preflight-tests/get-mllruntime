@@ -1,3 +1,0 @@
-#!/bin/bash
-
-grep MLLOG.*run_st "${1}" | sed -E -e 's/^.*:::MLLOG.*time_ms": //' -e 's/,.*$//' | awk '{if (prev!=0) {print $0-prev}; prev=$0;} END {if (NR != 2) {print "error"}}'

@@ -1,9 +1,0 @@
-ARG FROM_IMAGE_NAME=nvcr.io/nvdlfwea/mlperftv60/llama31_405b-arm:20260428
-FROM ${FROM_IMAGE_NAME}
-
-# Need to fix the LD_LIBRARY_PATH because the install of the newer
-# NCCL in the base container removes libnccl from /usr/lib.
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/aarch64-linux-gnu
-
-# Make copy of lib.real for triton, since it has a hard coded path
-RUN cp -r /usr/local/cuda/compat/lib.real /usr/local/cuda/compat/lib

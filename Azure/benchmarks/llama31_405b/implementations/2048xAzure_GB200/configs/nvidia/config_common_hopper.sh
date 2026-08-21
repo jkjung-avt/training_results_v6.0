@@ -1,2 +1,0 @@
-export OVERLAP_GRAD_REDUCE=True
-export OVERLAP_PARAM_GATHER=True

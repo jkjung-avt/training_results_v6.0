@@ -1,6 +1,0 @@
-export NCCL_NVLS_ENABLE=0
-export UB_SKIPMC=1
-export QKV_DGRAD_SM=16
-export QKV_WGRAD_SM=16
-export FC1_DGRAD_SM=16
-export FC1_WGRAD_SM=16

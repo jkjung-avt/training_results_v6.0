@@ -1,2 +1,0 @@
-ERROR -   System description checker failed for Tyrone Camarero PDI200A2HG-810 (8x B200-SXM-180GB) : ["Field status contains a non valid value: onprem, must be one of ['Available on-premise', 'Available cloud', 'Research, Development, or Internal (RDI)', 'Preview']"]
-INFO -   System description checker passed for Tyrone Camarero PDI200A2HG-810 (8x B200-SXM-180GB)
