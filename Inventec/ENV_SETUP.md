@@ -13,7 +13,7 @@ Inventec AI Lab Environment Setup for MLPerf Training
 
 * Slurm
 
-  - Slurm is installed as BCM's workload manager
+  - Slurm is installed, with both [Pyxis](https://github.com/NVIDIA/pyxis) and [Enroot](https://github.com/NVIDIA/enroot), as BCM's workload manager
   - Slurm client/compute nodes: p5800-1, p9000-1, etc.
   - Slurm server/head nodes: BCM head nodes also act as Slurm server nodes
 
@@ -23,3 +23,12 @@ Inventec AI Lab Environment Setup for MLPerf Training
   - `/raid`: RAID0 based on local U.2 (8x), used for MLPerf Training data (training data, validation data, tokenizer and checkpoints, etc.)
   - `/hps`: WekaIO high performance storage, as an alternative to `/raid` especially for multi-node scenarios
   - `/mnt`: NFS storage, used for source code and Docker container SquashFS files
+
+* Cloning the source code
+
+  Example:
+
+  ```shell
+  cd /mnt/jkjung
+  git clone https://github.com/jkjung-avt/training_results_v6.0.git
+  ```
