@@ -1,4 +1,4 @@
-## Running Large Language Model Llama 3.1 8B PyTorch MLPerf Benchmark
+## Running Large Language Model Llama 3.1 8B MLPerf Training Benchmark
 
 This file contains the instructions for running the Large Language Model Llama 3.1 8B MLPerf Benchmark on Inventec GPU servers.
 
@@ -30,10 +30,10 @@ To download the dataset and align the directories with the layout the benchmark 
 bash data_scripts/download_8b.sh
 ```
 
-The final content under `${DATADIR}/8b` should look like:
+At the end, the directory structure should look like:
 
-```
-/mnt/data/mlperf_training/llama31/8b
+```bash
+/raid/data/mlperf_training/llama31/8b
 ├── c4-train.en_6_text_document.bin
 ├── c4-train.en_6_text_document.idx
 ├── c4-validation-91205-samples.en_text_document.bin
@@ -95,6 +95,8 @@ Or just launch the training job on any idle compute node:
 ```bash
 sbatch -N ${DGXNNODES} --time=${WALLTIME} run.sub
 ```
+
+All configuration files follow the format `config_<SYSTEM_NAME>_<NODES>x<GPUS/NODE>x<BATCH/GPU>xtpXppYcpZ.sh`, where X represents tensor parallel, Y represents pipeline parallel, and Z represents context parallel.
 
 # 4. Quality
 

@@ -1,43 +1,31 @@
-## Running NVIDIA Small MoE GPT OSS 20B PyTorch MLPerf Benchmark
+## Running Small MoE GPT OSS 20B MLPerf Training Benchmark
 
-This file contains the instructions for running the NVIDIA Small MoE GPT OSS 20B PyTorch MLPerf Benchmark on NVIDIA hardware.
+This file contains the instructions for running the Small MoE GPT OSS 20B PyTorch MLPerf Benchmark on Inventec GPU servers.
 
-## 1. Hardware Requirements
+## 1. Environment Setup
 
-- At least 100GB disk space is required.
-- NVIDIA GPU with at least 80GB memory is strongly recommended.
-- GPUs are not required for dataset preparation.
+- Refer to [ENV_SETUP.md](../../../../ENV_SETUP.md).
+- Assuming the source code has been cloned at `/mnt/jkjung/training_results_v6.0`.
 
-## 2. Software Requirements
+## 2. Set up
 
-- Slurm with [Pyxis](https://github.com/NVIDIA/pyxis) and [Enroot](https://github.com/NVIDIA/enroot)
-- [Docker](https://www.docker.com/)
-
-## 3. Set up
-
-### 3.1 Build the container
-
-Replace `<docker/registry>` with your container registry and build:
+### 2.1 Build the container and the SquashFS file
 
 ```bash
-docker build -t <docker/registry>/mlperf-nvidia:gpt_oss_20b-pyt .
-# optionally: docker push <docker/registry>/mlperf-nvidia:gpt_oss_20b-pyt
-export CONT=<docker/registry>/mlperf-nvidia:gpt_oss_20b-pyt
+docker build -t mlperf-inventec:gpt_oss_20b-pyt .
+enroot import -o /mnt/sqsh/gpt_oss_20b-pyt.sqsh dockerd://mlperf-inventec:gpt_oss_20b-pyt
 ```
 
-make sure that container is accessible on your Slurm system.
+### 2.2 Prepare dataset and tokenizer
 
-### 3.2 Prepare dataset
-
-**GPT OSS 20B uses the same dataset as LLama3.1 8b!**
+**GPT OSS 20B uses the same dataset and tokenizer as LLama3.1 8b!**
 * **If you already have the LLama3.1 8b dataset you can skip this part**
 * **If you don't, please mind that there are pointers/names related to 8b - this has been done on purpose**
 
 Set the directory for the data to be downloaded to:
 
 ```bash
-# export DATADIR=<path/to/dataset>
-export DATADIR=/mnt/data/mlperf_training/llama31
+export DATADIR=/raid/data/mlperf_training/llama31
 ```
 
 To download the dataset and align the directories with the layout the benchmark expects, run:
@@ -49,7 +37,7 @@ bash data_scripts/download.sh
 At the end, the directory structure should look like:
 
 ```bash
-/mnt/data/mlperf_training/llama31/8b
+/raid/data/mlperf_training/llama31/8b
 ├── c4-train.en_6_text_document.bin
 ├── c4-train.en_6_text_document.idx
 ├── c4-validation-91205-samples.en_text_document.bin
@@ -68,29 +56,28 @@ At the end, the directory structure should look like:
 2 directories, 13 files
 ```
 
-### 3.3 Model and checkpoint preparation
+### 2.3 Model and checkpoint preparation
 
-#### 3.3.1 Publication/Attribution
+#### 2.3.1 Publication/Attribution
 
 [Megatron](https://docs.nvidia.com/deeplearning/nemo/user-guide/docs/en/stable/nlp/nemo_megatron/intro.html) is a large, powerful transformer developed by the Applied Deep Learning Research team at NVIDIA. This repository uses [NeMo Megatron](https://github.com/NVIDIA/NeMo). NeMo Megatron GPT has been integrated with [NVIDIA Transformer Engine](https://github.com/NVIDIA/TransformerEngine). Transformer Engine enables FP8/FP4 training on NVIDIA GPUs.
 
-#### 3.3.2 Model Architecture
+#### 2.3.2 Model Architecture
 
 The model largely follows the paper titled [gpt-oss-120b & gpt-oss-20b Model Card](https://arxiv.org/abs/2508.10925).
 
-| Parameter | Value |
-|-----------|-------|
-| Model Size | 20B parameters |
-| Architecture | GPT with Mixture of Experts |
-| Sequence Length | 8192 |
-| Expert Parallelism | 8 |
+| Parameter          | Value                       |
+|--------------------|-----------------------------|
+| Model Size         | 20B parameters              |
+| Architecture       | GPT with Mixture of Experts |
+| Sequence Length    | 8192                        |
+| Expert Parallelism | 8                           |
 
-
-#### 3.3.3 Model checkpoint
+#### 2.3.3 Model checkpoint
 
 The GPT OSS 20B model is trained from scratch and is not using a checkpoint.
 
-## 4. Launch training
+## 3. Launch training
 
 For training, we use Slurm with the Pyxis extension, and Slurm's MPI support to run our container.
 
@@ -99,17 +86,28 @@ Navigate to the directory where `run.sub` is stored.
 The launch command structure:
 
 ```bash
-export CONT=<docker/registry>/mlperf-nvidia:gpt_oss_20b-pyt
+export CONT=/mnt/sqsh/gpt_oss_20b-pyt.sqsh
 export LOGDIR=../../../../results/P9000IG7_ngc26.04_nemo/gpt_oss_20b
-export DATADIR=/mnt/data/mlperf_training/llama31
+export DATADIR=/raid/data/mlperf_training/llama31
 source config_P9000IG7_1x8x3xtp1pp1cp1ep1_mxfp8.sh
-export SLURM_MPI_TYPE=pmi2
+```
+
+Launch the training job on a specific compute node (e.g. p5800-1):
+
+```bash
+sbatch -w p5800-1 --time=${WALLTIME} run.sub
+```
+
+Or just launch the training job on any idle compute node:
+
+
+```bash
 sbatch -N ${DGXNNODES} --time=${WALLTIME} run.sub
 ```
 
 All configuration files follow the format `config_<SYSTEM_NAME>_<NODES>x<GPUS/NODE>x<BATCH/GPU>xtpXppYcpZ.sh`, where X represents tensor parallel, Y represents pipeline parallel, and Z represents context parallel.
 
-# 5. Quality
+# 4. Quality
 
 ### Quality metric
 Log Perplexity
@@ -123,8 +121,7 @@ Evaluate after every 12,288 sequences (=100M tokens)
 ### Evaluation thoroughness
 Evaluation on the validation subset that consists of 1024 sequences (=8.4M tokens).
 
-
-# 6. Additional notes
+# 5. Additional notes
 
 ### Config naming convention
 
@@ -155,7 +152,6 @@ Recommendation on adjusting the knobs:
 1. GBS should be divisible by `DP * VP`, where VP represents Virtual Pipelining, controlled by environment variable `INTERLEAVED_PIPELINE`. 
 2. Model's number of layers, controlled by `OVERWRITTEN_NUM_LAYERS` knob (with default 126), should be divisible by PP * VP. 
    1. It's also recommended that, if you choose to adjust this knob, then you should export `LOAD_CHECKPOINT=""` to disable checkpoint loading, otherwise you will be loading a checkpoint with more layers to a model with fewer layers, which might cause issues. 
-
 
 ### Seeds
 NeMo produces dataset index shuffling only on one process and holds the `SEED` value in the file name.
