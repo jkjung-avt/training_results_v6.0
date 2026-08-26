@@ -35,7 +35,9 @@ WORKDIR /workspace/ft-llm
 RUN NVARCH=$(uname -m |grep x86_64 2>/dev/null || echo sbsa) && \
     curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/${NVARCH}/3bf863cc.pub > /etc/apt/trusted.gpg.d/cuda.asc && \
     echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/${NVARCH} /" > /etc/apt/sources.list.d/cuda.list && \
-    apt-get update && apt-get install -y libcudnn9-cuda-13=9.21.1.3-1 && rm -rf /var/lib/apt/lists/*
+    apt-get update && apt-get install -y libcudnn9-cuda-13=9.21.1.3-1 && \
+    ln -s /usr/lib/x86_64-linux-gnu/libcudnn.so.9 /usr/lib/x86_64-linux-gnu/libcudnn.so && \
+    rm -rf /var/lib/apt/lists/*
 ENV CUDNN_VERSION=9.21.1.3
 
 ## 1. Megatron-Bridge and Megatron-Core
@@ -71,4 +73,3 @@ RUN if [ "${TE_REVISION}" != SKIP ]; then \
 
 ADD . /workspace/ft-llm
 RUN pip install -r requirements.txt
-
