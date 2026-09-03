@@ -3,12 +3,16 @@
 source $(dirname ${BASH_SOURCE[0]})/config_common.sh
 source $(dirname ${BASH_SOURCE[0]})/config_common_fp4.sh
 
+# no munge in the docker container
+export PMIX_MCA_psec=^munge
+
 # hyperparameters
 export MAX_STEPS=550
 export LR=0.0006
 export MINIBS=1
 export CP=1
 export MCORE_CUDA_GRAPH=1
+export BUCKET_SIZE=45000000
 export NUM_WORKERS=8
 
 export HEALING_ITER=350
@@ -22,6 +26,7 @@ export WALLTIME=$((5 + ${NEXP:-1} * ($WALLTIME_RUNANDTIME + 5)))
 
 export MLPERF_SUBMITTER="Inventec"
 export MLPERF_SUBMISSION_ORG="Inventec Corporation"
+export MLPERF_CLUSTER_NAME="Inventec AI Lab"
 export MLPERF_SYSTEM_NAME="P9000IG7 8xB300"
 export MLPERF_SUBMISSION_PLATFORM="Inventec P9000IG7"
 export MLPERF_STATUS="research"

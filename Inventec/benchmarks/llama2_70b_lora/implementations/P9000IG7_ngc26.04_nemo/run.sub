@@ -112,8 +112,7 @@ readonly _logfile_base="${LOGDIR}/${LOGBASE}"
 # MLPerf vars
 MLPERF_HOST_OS=$(srun -N1 -n1 bash <<EOF
     source /etc/os-release
-    source /etc/dgx-release || true
-    echo "\${PRETTY_NAME} / \${DGX_PRETTY_NAME:-???} \${DGX_OTA_VERSION:-\${DGX_SWBUILD_VERSION:-???}}"
+    echo "\${PRETTY_NAME}"
 EOF
 )
 export MLPERF_HOST_OS
