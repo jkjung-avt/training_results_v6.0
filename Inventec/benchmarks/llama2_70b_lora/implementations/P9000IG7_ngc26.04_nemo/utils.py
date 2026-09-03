@@ -42,39 +42,6 @@ cg_logger.addFilter(RankZeroFilter())
 
 torch.cuda.set_device(int(os.getenv("SLURM_LOCALID", "0")))
 
-import atexit
-from datetime import datetime
-
-
-def setup_oom_profiling(output_dir="/results/mem_dump"):
-    rank = int(os.getenv("SLURM_PROCID", 0))
-    local_rank = int(os.getenv("SLURM_LOCALID", 0))
-
-    os.makedirs(output_dir, exist_ok=True)
-
-    if not torch.cuda.is_available():
-        return
-
-    torch.cuda.memory._record_memory_history(max_entries=100000)
-
-    def save_snapshot():
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"{output_dir}/snapshot_r{rank}_g{local_rank}_{timestamp}.pickle"
-        try:
-            torch.cuda.memory._dump_snapshot(filename)
-            print(f"[Rank {rank}] Snapshot: {filename}")
-        except Exception as e:
-            print(f"[Rank {rank}] Failed to save snapshot: {e}")
-
-    def exit_handler():
-        save_snapshot()
-        torch.cuda.memory._record_memory_history(enabled=None)
-
-    atexit.register(exit_handler)
-
-    print(f"[Rank {rank}] Memory profiling enabled on GPU {local_rank}")
-
-
 
 def force_all_tensors_to_non_fp8_patched(sharded_state_dict):
     return
@@ -116,27 +83,15 @@ def get_rank():
     return int(os.getenv("SLURM_PROCID", 0))
 
 
-def create_debug_peft_hook(cfg, state):
-    from megatron.bridge.training.setup import _apply_peft_transformation
-
-    def peft_pre_wrap_hook(model):
-        if cfg.peft is None:
-            return model
-        transformed_model = _apply_peft_transformation(cfg.peft, model)
-        return transformed_model
-
-    return peft_pre_wrap_hook
-
-
 @property
 def pack_metadata_override(self):
     return None
 
-from megatron.bridge.data.builders.finetuning_dataset import FinetuningDatasetBuilder
+from megatron.bridge.data.builders import FinetuningDatasetBuilder
 FinetuningDatasetBuilder.pack_metadata = pack_metadata_override
 
 
-def patch_build_train_valid_test_data_loaders(cfg, train_state, build_train_valid_test_datasets_provider, dp_group):
+def patch_build_train_valid_test_data_loaders(cfg, train_state, build_train_valid_test_datasets_provider, dp_group, *, eval_dp_group):
     from megatron.bridge.data.loaders import build_train_valid_test_datasets
     from megatron.bridge.data.samplers import build_pretraining_data_loader
     from megatron.bridge.training.utils.sig_utils import DistributedSignalHandler
@@ -235,7 +190,7 @@ from megatron.bridge.training.gpt_step import get_batch
 
 def forward_step(state, data_iterator, model, return_schedule_plan: bool = False):
     pg_collection = get_pg_collection(model)
-    tokens, labels, loss_mask, attention_mask, position_ids, _, _, _, _, _ = get_batch(
+    tokens, labels, loss_mask, attention_mask, position_ids, _ = get_batch(
         data_iterator, state.cfg, False, pg_collection=pg_collection
     )
     forward_args = {

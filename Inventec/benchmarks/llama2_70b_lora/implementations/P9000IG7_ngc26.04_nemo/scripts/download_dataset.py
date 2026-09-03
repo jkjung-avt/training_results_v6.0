@@ -19,6 +19,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import json
 from huggingface_hub import snapshot_download
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,20 +29,10 @@ class DatasetProcessor:
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
-    def transform_row(self, row):
-        try:
-            return {
-                "input_ids": row["input_ids"],
-                "loss_mask": [int(x != -100) for x in row["labels"]],
-                "seq_start_id": [0],
-            }
-        except KeyError as e:
-            logging.error(f"Missing required column in data: {e}")
-            raise
-
     def convert_split(self, split: str) -> None:
         input_file = self.data_dir / "data" / f"{split}-00000-of-00001.parquet"
         output_file = self.data_dir / f"{split}.npy"
+        metadata_file = self.data_dir / f"{split}_metadata.jsonl"
 
         if not input_file.exists():
             raise FileNotFoundError(f"Input file not found: {input_file}")
@@ -49,7 +40,23 @@ class DatasetProcessor:
         try:
             logging.info(f"Converting {split} split...")
             df = pd.read_parquet(input_file)
-            transformed_data = df.apply(self.transform_row, axis=1).tolist()
+
+            transformed_data = []
+            metadata_list = []
+            for _, row in df.iterrows():
+                seq_len = len(row["input_ids"])
+                transformed_data.append({
+                    "input_ids": row["input_ids"],
+                    "loss_mask": [int(x != -100) for x in row["labels"]],  # -100 = PyTorch ingore_index
+                    "seq_start_id": [0],
+                })
+                metadata_list.append({
+                    "cu_seqlens": [0, seq_len],
+                    "max_samples_per_bin": 1
+                })
+            with open(metadata_file, "w") as mf:
+                json.dump(metadata_list, mf)
+
             np.save(output_file, transformed_data)
             logging.info(f"Successfully converted {split} split")
         except Exception as e:

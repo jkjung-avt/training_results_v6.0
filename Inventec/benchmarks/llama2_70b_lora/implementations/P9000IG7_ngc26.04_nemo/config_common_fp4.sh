@@ -1,6 +1,7 @@
 export FP4=True
 export FP8=False
 export FP8_PARAM_GATHER=0
+export FP4_PARAM_GATHER=0
 export FP4_RECIPE="nvfp4"
 export FP4_PARAM=False
 

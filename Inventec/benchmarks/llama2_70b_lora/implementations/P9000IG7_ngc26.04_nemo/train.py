@@ -24,7 +24,7 @@ from callback_debug import StatsLogCallback
 from callback_logging import DeltaTimingCallback, MLPerfLoggingCallback, mllogger
 from callback_nvfp4 import NVFP4Callback
 from callback_warmup import NsysProfileCallback, WarmupCallback
-from megatron.bridge.data.datasets.packed_sequence import PackedSequenceSpecs
+from megatron.bridge.data.packing import PackedSequenceSpecs
 from megatron.bridge.models.gpt_provider import GPTModelProvider
 from megatron.bridge.peft.lora import LoRA
 from megatron.bridge.training.config import (
@@ -32,7 +32,7 @@ from megatron.bridge.training.config import (
     ConfigContainer,
     DistributedDataParallelConfig,
     DistributedInitConfig,
-    FinetuningDatasetConfig,
+    GPTSFTDatasetConfig,
     LoggerConfig,
     OptimizerConfig,
     ProfilingConfig,
@@ -257,9 +257,11 @@ def main(cfg):
         packed_sequence_size=cfg.model.encoder_seq_length,
         packed_train_data_path=f"{data_root}/train.npy",
         packed_val_data_path=f"{data_root}/validation.npy",
+        packed_metadata_path=f"{data_root}/train_metadata.jsonl",
+        pad_cu_seqlens=True,
     )
 
-    dataset_config = FinetuningDatasetConfig(
+    dataset_config = GPTSFTDatasetConfig(
         dataloader_type="batch",
         dataset_root=data_root,
         seq_length=8192,
@@ -268,8 +270,10 @@ def main(cfg):
         do_test=False,
         persistent_workers=True,
         num_workers=cfg.dataloader.num_workers,
-        packed_sequence_specs=packed_sequence_specs,
+        offline_packing_specs=packed_sequence_specs,
+        enable_offline_packing=True,
         dataset_kwargs={
+            "pad_to_max_length": True,
             "return_cu_seqlen": False,
         },
         max_train_samples=int(ceil(cfg.trainer.global_batch_size * cfg.trainer.max_steps * 1.005)),

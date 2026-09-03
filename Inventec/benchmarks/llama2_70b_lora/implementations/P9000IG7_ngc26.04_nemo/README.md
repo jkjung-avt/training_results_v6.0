@@ -12,18 +12,18 @@ This file contains the instructions for running the NVIDIA NeMo LLama2-70B LoRA 
 ### 2.1 Build the container and the SquashFS file
 
 ```bash
-docker build -t mlperf-inventec:llama2_70b_lora-pyt .
-enroot import -o /mnt/sqsh/llama2_70b_lora-pyt.sqsh dockerd://mlperf-inventec:llama2_70b_lora-pyt
+docker build -t mlperf-inventec:llama2_70b_lora_nemo26.08 .
+enroot import -o /mnt/sqsh/llama2_70b_lora_nemo26.08.sqsh dockerd://mlperf-inventec:llama2_70b_lora_nemo26.08
 ```
 
 ### 2.2 Download dataset and model + preprocessing
 
 This benchmark uses the [GovReport](https://gov-report-data.github.io/) dataset.
 
-The dataset download/preprocessing scripts are included in the container. To invoke them, you need either a docker or slurm/enroot environment. Start the container, replacing `</path/to/dataset>` with the existing path to where you want to save the dataset and the model weights/tokenizer:
+The dataset download/preprocessing scripts are included in the container. To invoke them, you need either a docker or slurm/enroot environment. Start the container.
 
 ```bash
-docker run -it --rm --network=host --ipc=host --volume /raid/data/mlperf_training/llama2_70b_lora:/data mlperf-inventec:llama2_70b_lora-pyt
+docker run -it --rm --gpus=all --network=host --ipc=host --volume /raid/data/mlperf_training/llama2_70b_lora:/data mlperf-inventec:llama2_70b_lora_nemo26.08
 
 # now you should be inside the container in the /workspace/ft-llm directory
 python scripts/download_dataset.py --data_dir /data/gov_report  # download and preprocess dataset; takes less than 1 minute
@@ -34,8 +34,11 @@ After both scripts finish you should see the following files in the `/data` dire
 
 ```
 /data
+/raid/data/mlperf_training/llama2_70b_lora
 ├── gov_report
+│   ├── train_metadata.jsonl
 │   ├── train.npy
+│   ├── validation_metadata.jsonl
 │   └── validation.npy
 └── model
     ├── iter_0000000
@@ -47,14 +50,14 @@ After both scripts finish you should see the following files in the `/data` dire
     │   ├── run_config.yaml
     │   ├── tokenizer
     │   │   ├── special_tokens_map.json
+    │   │   ├── tokenizer_config.json
     │   │   ├── tokenizer.json
-    │   │   ├── tokenizer.model
-    │   │   └── tokenizer_config.json
+    │   │   └── tokenizer.model
     │   └── train_state.pt
     ├── latest_checkpointed_iteration.txt
     └── latest_train_state.pt
 
-5 directories, 15 files
+5 directories, 17 files
 ```
 
 Exit the container.
@@ -68,7 +71,7 @@ Navigate to the directory where `run.sub` is stored.
 The launch command structure:
 
 ```bash
-export CONT=/mnt/sqsh/llama2_70b_lora-pyt.sqsh
+export CONT=/mnt/sqsh/llama2_70b_lora_nemo26.08.sqsh
 export LOGDIR=../../../../results/P9000IG7_ngc26.04_nemo/llama2_70b_lora
 export MODEL=/raid/data/mlperf_training/llama2_70b_lora/model
 export DATADIR=/raid/data/mlperf_training/llama2_70b_lora/gov_report

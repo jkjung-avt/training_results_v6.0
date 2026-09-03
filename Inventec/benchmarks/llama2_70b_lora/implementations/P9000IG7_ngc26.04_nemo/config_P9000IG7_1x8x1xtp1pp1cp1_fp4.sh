@@ -12,7 +12,7 @@ export LR=0.0006
 export MINIBS=1
 export CP=1
 export MCORE_CUDA_GRAPH=1
-export BUCKET_SIZE=45000000
+export BUCKET_SIZE=10000000
 export NUM_WORKERS=8
 
 export HEALING_ITER=350
