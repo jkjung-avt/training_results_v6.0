@@ -12,8 +12,8 @@ This file contains the instructions for running the Large Language Model Llama 3
 ### 2.1 Build the container and the SquashFS file
 
 ```bash
-docker build -t mlperf-inventec:llama31_8b-pyt .
-enroot import -o /mnt/sqsh/llama31_8b-pyt.sqsh dockerd://mlperf-inventec:llama31_8b-pyt
+docker build -t mlperf-inventec:llama31_8b_nemo26.08 .
+enroot import -o /mnt/sqsh/llama31_8b_nemo26.08.sqsh dockerd://mlperf-inventec:llama31_8b_nemo26.08
 ```
 
 ### 2.2 Prepare dataset and tokenizer
@@ -77,8 +77,8 @@ Navigate to the directory where `run.sub` is stored.
 The launch command structure:
 
 ```bash
-export CONT=/mnt/sqsh/llama31_8b-pyt.sqsh
-export LOGDIR=../../../../results/P9000IG7_ngc26.04_nemo/llama31_8b
+export CONT=/mnt/sqsh/llama31_8b_nemo26.08.sqsh
+export LOGDIR=../../../../results/P9000IG7_nemo26.08/llama31_8b
 export DATADIR=/raid/data/mlperf_training/llama31
 source config_P9000IG7_1x8x2xtp1pp1cp1_8b_fp4.sh
 ```

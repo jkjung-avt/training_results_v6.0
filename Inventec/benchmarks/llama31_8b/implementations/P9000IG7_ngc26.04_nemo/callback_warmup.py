@@ -138,9 +138,8 @@ class WarmupCallback(Callback):
         )
 
         enable_cuda_graph = int(os.getenv("MCORE_CUDA_GRAPH", "0")) == 1
-        cuda_graph_scope = context.state.cfg.model.cuda_graph_scope
         cg_warmup_steps = self.cfg.model.custom.cuda_graph_warmup_steps
-        if enable_cuda_graph and CudaGraphScope.full_iteration in cuda_graph_scope:
+        if enable_cuda_graph:
             forward_backward_func = FullCudaGraphWrapper(
                 forward_backward_func,
                 cuda_graph_warmup_steps=cg_warmup_steps,
