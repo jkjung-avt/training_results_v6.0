@@ -72,7 +72,7 @@ The launch command structure:
 
 ```bash
 export CONT=/mnt/sqsh/llama2_70b_lora_nemo26.08.sqsh
-export LOGDIR=../../../../results/P9000IG7_ngc26.04_nemo/llama2_70b_lora
+export LOGDIR=../../../../results/P9000IG7_nemo26.08/llama2_70b_lora
 export MODEL=/raid/data/mlperf_training/llama2_70b_lora/model
 export DATADIR=/raid/data/mlperf_training/llama2_70b_lora/gov_report
 source config_P9000IG7_1x8x1xtp1pp1cp1_fp4.sh
