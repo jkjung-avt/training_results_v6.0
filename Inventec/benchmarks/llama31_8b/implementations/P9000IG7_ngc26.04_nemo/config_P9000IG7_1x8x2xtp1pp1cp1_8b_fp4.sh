@@ -1,7 +1,8 @@
 source $(dirname ${BASH_SOURCE[0]})/config_common.sh
-source $(dirname ${BASH_SOURCE[0]})/config_common_fp4.sh
-source $(dirname ${BASH_SOURCE[0]})/config_common_cg.sh
 source $(dirname ${BASH_SOURCE[0]})/config_common_8b.sh
+source $(dirname ${BASH_SOURCE[0]})/config_common_cg.sh
+source $(dirname ${BASH_SOURCE[0]})/config_common_fp8attn.sh
+source $(dirname ${BASH_SOURCE[0]})/config_common_fp4.sh
 
 # no munge in the docker container
 export PMIX_MCA_psec=^munge
