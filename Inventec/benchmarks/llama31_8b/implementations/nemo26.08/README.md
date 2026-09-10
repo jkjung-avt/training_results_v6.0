@@ -78,9 +78,9 @@ The launch command structure:
 
 ```bash
 export CONT=/mnt/sqsh/llama31_8b_nemo26.08.sqsh
-export LOGDIR=../../../../results/P9000IG7_nemo26.08/llama31_8b
+export LOGDIR=../../../../results/P5800G7_nemo26.08/llama31_8b
 export DATADIR=/raid/data/mlperf_training/llama31
-source config_P9000IG7_1x8x2xtp1pp1cp1_8b_fp4.sh
+source config_P5800G7_1x8x2xtp1pp1cp1_8b_fp4.sh
 ```
 
 Launch the training job on a specific compute node (e.g. p5800-1):
