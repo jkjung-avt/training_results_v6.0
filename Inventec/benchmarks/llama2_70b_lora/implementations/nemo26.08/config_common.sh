@@ -1,9 +1,8 @@
 #!/bin/bash
 export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[1]}) | sed 's/^config_//' | sed 's/\.sh$//' )
 
-export NCCL_MIN_P2P_NCHANNELS=32;
-export NCCL_MIN_CTAS=32;
-export NCCL_NCHANNELS_PER_NET_PEER=32;
+export NCCL_MIN_NCHANNELS=32
+export NCCL_MIN_CTAS=32
 export MC_TP_OVERLAP_AG=True
 export MC_TP_OVERLAP_RS=True
 export MC_TP_OVERLAP_RS_DGRAD=True
@@ -30,7 +29,6 @@ export PP=1
 export TP=1
 export SP=0
 export CG_WEIGHT_CACHING=0
-# export FP8_PARAM_GATHER=1
 export FP8_PARAM_GATHER=0
 
 export USE_TE_OPS=1
