@@ -34,7 +34,6 @@ After both scripts finish you should see the following files in the `/data` dire
 
 ```
 /data
-/raid/data/mlperf_training/llama2_70b_lora
 ├── gov_report
 │   ├── train_metadata.jsonl
 │   ├── train.npy
