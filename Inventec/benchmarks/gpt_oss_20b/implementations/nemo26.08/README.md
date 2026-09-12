@@ -12,8 +12,8 @@ This file contains the instructions for running the Small MoE GPT OSS 20B PyTorc
 ### 2.1 Build the container and the SquashFS file
 
 ```bash
-docker build -t mlperf-inventec:gpt_oss_20b-pyt .
-enroot import -o /mnt/sqsh/gpt_oss_20b-pyt.sqsh dockerd://mlperf-inventec:gpt_oss_20b-pyt
+docker build -t mlperf-inventec:gpt_oss_20b_nemo26.08 .
+enroot import -o /mnt/sqsh/gpt_oss_20b_nemo26.08.sqsh dockerd://mlperf-inventec:gpt_oss_20b_nemo26.08
 ```
 
 ### 2.2 Prepare dataset and tokenizer
@@ -86,10 +86,10 @@ Navigate to the directory where `run.sub` is stored.
 The launch command structure:
 
 ```bash
-export CONT=/mnt/sqsh/gpt_oss_20b-pyt.sqsh
-export LOGDIR=../../../../results/P9000IG7_ngc26.04_nemo/gpt_oss_20b
+export CONT=/mnt/sqsh/gpt_oss_20b_nemo26.08.sqsh
+export LOGDIR=../../../../results/P5800G7_nemo26.08/gpt_oss_20b
 export DATADIR=/raid/data/mlperf_training/llama31
-source config_P9000IG7_1x8x3xtp1pp1cp1ep1_mxfp8.sh
+source config_P5800G7_1x8x3xtp1pp1cp1ep1_mxfp8.sh
 ```
 
 Launch the training job on a specific compute node (e.g. p5800-1):
