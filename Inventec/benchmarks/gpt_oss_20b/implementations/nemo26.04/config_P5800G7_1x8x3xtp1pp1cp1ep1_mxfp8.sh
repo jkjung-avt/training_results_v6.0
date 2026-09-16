@@ -15,6 +15,7 @@ export EXPERT_PARALLEL=1
 # HybridEP config
 export NUM_OF_HYBRID_EP_RANKS_PER_NVLINK_DOMAIN=$EXPERT_PARALLEL
 export USE_MNNVL=0
+export AVERAGE_IN_COLLECTIVE=True
 
 # 1.5x oversized activation for CG. Override the env. var set in config_common_cg.sh
 export MOE_EXPERT_RANK_CAPACITY_FACTOR=1.5
@@ -22,7 +23,7 @@ export MOE_EXPERT_RANK_CAPACITY_FACTOR=1.5
 # Enable CuteDSL kernels
 export USE_TE_OPS=True
 export NVTE_CUTEDSL_FUSED_GROUPED_MLP=1
-unset CUDNN_FE_GROUPED_GEMM_DYNAMIC_MNKL
+export CUDNN_FE_GROUPED_GEMM_DYNAMIC_MNKL=DYNAMIC_M
 
 # Experimental
 export OVERLAP_PARAM_GATHER_WITH_OPTIM_STEP=True

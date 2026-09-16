@@ -98,3 +98,7 @@ export GC_VALID=10000
 # Enable 2D weights and stochastic rounding if using FP4
 export NVTE_NVFP4_DISABLE_STOCHASTIC_ROUNDING=0
 export NVTE_NVFP4_DISABLE_2D_QUANTIZATION=0
+
+export MLPERF_LINEAR_PRECISION="bfloat16"
+export MLPERF_ATTN_PRECISION="bfloat16"
+export MLPERF_COMM_PRECISION="bfloat16"
