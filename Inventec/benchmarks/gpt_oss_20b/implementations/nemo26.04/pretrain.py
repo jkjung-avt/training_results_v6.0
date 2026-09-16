@@ -555,8 +555,9 @@ def main(cfg):
     ]
 
     # GC Config
+    eval_interval=cfg.trainer.val_check_interval
     config_container.train.manual_gc = True
-    config_container.train.manual_gc_interval = 500
+    config_container.train.manual_gc_interval = eval_interval
     config_container.train.manual_gc_eval = False
 
     # Memory management
