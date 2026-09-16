@@ -32,8 +32,8 @@ ENV CUDNN_VERSION=9.21.1.3
 ENV PIP_CONSTRAINT=""
 #ENV PYTHONPATH="/opt/Megatron-Bridge/src:/opt/Megatron-Bridge/3rdparty/Megatron-LM"
 
-RUN pip install git+https://github.com/mlcommons/logging.git@6.0.0-rc6 && \
-    pip install git+https://github.com/NVIDIA/mlperf-common.git@training-v6.0 && \
+RUN pip install git+https://github.com/mlcommons/logging.git@003087fbe75ef759b513d950e39b85084024739c && \
+    pip install git+https://github.com/NVIDIA/mlperf-common.git@training-v6.1-rc0 && \
     pip install hydra-core==1.3.5
 
 WORKDIR /workspace/ft-llm

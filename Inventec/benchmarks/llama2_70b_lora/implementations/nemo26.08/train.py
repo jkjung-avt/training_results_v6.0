@@ -192,6 +192,16 @@ def main(cfg):
             key=mllogger.constants.GLOBAL_BATCH_SIZE,
             value=cfg.trainer.global_batch_size,
         )
+        mllogger.event(key=mllogger.constants.TENSOR_PARALLELISM, value=cfg.model.tensor_model_parallel_size)
+        mllogger.event(key=mllogger.constants.PIPELINE_PARALLELISM, value=cfg.model.pipeline_model_parallel_size)
+        mllogger.event(key=mllogger.constants.CONTEXT_PARALLELISM, value=cfg.model.context_parallel_size)
+        mllogger.event(key=mllogger.constants.MICRO_BATCH_SIZE, value=cfg.trainer.micro_batch_size)
+        mllogger.event(key=mllogger.constants.EXPERT_PARALLELISM, value=1)
+        mllogger.event(key=mllogger.constants.CONFIG_FILENAME,
+                       value=f"config_{os.environ.get('DGXSYSTEM', 'UNKNOWN')}.sh")
+        mllogger.event(key=mllogger.constants.LOWEST_NUMERICAL_PRECISION_IN_LINEAR, value=os.environ.get("MLPERF_LINEAR_PRECISION", ""))
+        mllogger.event(key=mllogger.constants.LOWEST_NUMERICAL_PRECISION_IN_ATTN, value=os.environ.get("MLPERF_ATTN_PRECISION", ""))
+        mllogger.event(key=mllogger.constants.LOWEST_NUMERICAL_PRECISION_IN_COMM, value=os.environ.get("MLPERF_COMM_PRECISION", ""))
 
     training_config = TrainingConfig(
         micro_batch_size=cfg.trainer.micro_batch_size,

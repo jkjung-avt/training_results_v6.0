@@ -53,3 +53,7 @@ export TQDM_DISABLE=True
 
 export MODEL_TFLOP_PER_SAMPLE=2598
 export PYTHONWARNINGS="ignore::FutureWarning,ignore::UserWarning"
+
+export MLPERF_LINEAR_PRECISION="fp8"
+export MLPERF_ATTN_PRECISION="fp8"
+export MLPERF_COMM_PRECISION="bfloat16"

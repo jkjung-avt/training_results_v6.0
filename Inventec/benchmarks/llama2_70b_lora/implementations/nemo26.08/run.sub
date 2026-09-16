@@ -29,7 +29,7 @@ echo "PROLOG_START $(date +%s)"
 
 # Vars with defaults
 : "${CHECK_COMPLIANCE:=1}"
-: "${MLPERF_RULESET:=6.0.0}"
+: "${MLPERF_RULESET:=6.1.0}"
 : "${MLPERF_SCALE:='unknown'}"
 : "${MLPERF_CLUSTER_NAME:='unknown'}"
 : "${MILESTONE_YML:=unknown}"
