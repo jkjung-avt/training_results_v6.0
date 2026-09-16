@@ -5,7 +5,7 @@ This file contains the instructions for running the Small MoE GPT OSS 20B PyTorc
 ## 1. Environment Setup
 
 - Refer to [ENV_SETUP.md](../../../../ENV_SETUP.md).
-- Assuming the source code has been cloned at `/mnt/jkjung/training_results_v6.0`.
+- Assuming the source code has been cloned at `/mnt/jkjung/training_results_v6.1`.
 
 ## 2. Set up
 
@@ -87,7 +87,7 @@ The launch command structure:
 
 ```bash
 export CONT=/mnt/sqsh/gpt_oss_20b_nemo26.04.sqsh
-export LOGDIR=../../../../results/P5800G7_nemo26.08/gpt_oss_20b
+export LOGDIR=../../../../results/P5800G7_ngpu8/gpt_oss_20b
 export DATADIR=/raid/data/mlperf_training/llama31
 source config_P5800G7_1x8x3xtp1pp1cp1ep1_mxfp8.sh
 ```

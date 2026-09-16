@@ -5,7 +5,7 @@ This file contains the instructions for running the Large Language Model Llama 3
 ## 1. Environment Setup
 
 - Refer to [ENV_SETUP.md](../../../../ENV_SETUP.md).
-- Assuming the source code has been cloned at `/mnt/jkjung/training_results_v6.0`.
+- Assuming the source code has been cloned at `/mnt/jkjung/training_results_v6.1`.
 
 ## 2. Set up
 
@@ -78,7 +78,7 @@ The launch command structure:
 
 ```bash
 export CONT=/mnt/sqsh/llama31_8b_nemo26.08.sqsh
-export LOGDIR=../../../../results/P5800G7_nemo26.08/llama31_8b
+export LOGDIR=../../../../results/P5800G7_ngpu8/llama31_8b
 export DATADIR=/raid/data/mlperf_training/llama31
 source config_P5800G7_1x8x2xtp1pp1cp1_8b_fp4.sh
 ```
