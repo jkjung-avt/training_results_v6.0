@@ -38,8 +38,8 @@ RUN pip install numcodecs==0.16.5 && \
 #COPY requirements.txt .
 #RUN pip uninstall -y transformers torchao && pip install --no-cache-dir -r requirements.txt
 
-RUN pip install git+https://github.com/mlcommons/logging.git@6.0.0-rc6 && \
-    pip install git+https://github.com/NVIDIA/mlperf-common.git@training-v6.0 && \
+RUN pip install git+https://github.com/mlcommons/logging.git@003087fbe75ef759b513d950e39b85084024739c && \
+    pip install git+https://github.com/NVIDIA/mlperf-common.git@training-v6.1-rc0 && \
     pip install hydra-core==1.3.5
 
 WORKDIR /workspace/llm

@@ -543,6 +543,16 @@ def log_hyperparams(config):
         mllogger.constants.OPT_LR_DECAY_STEPS: opt_lr_decay_steps,
         mllogger.constants.MAX_STEPS: int(os.environ.get("MAX_STEPS", 0)),
         mllogger.constants.OPT_LR_DECAY_SCHEDULE: "cosine with linear warmup",
+        # extra
+        mllogger.constants.TENSOR_PARALLELISM: config.model.tensor_model_parallel_size,
+        mllogger.constants.PIPELINE_PARALLELISM: config.model.pipeline_model_parallel_size,
+        mllogger.constants.CONTEXT_PARALLELISM: config.model.context_parallel_size,
+        mllogger.constants.EXPERT_PARALLELISM: 1,
+        mllogger.constants.MICRO_BATCH_SIZE: config.model.micro_batch_size,
+        mllogger.constants.CONFIG_FILENAME: f"config_{os.environ.get('DGXSYSTEM', 'UNKNOWN')}.sh",
+        mllogger.constants.LOWEST_NUMERICAL_PRECISION_IN_LINEAR: os.environ.get("MLPERF_LINEAR_PRECISION", ""),
+        mllogger.constants.LOWEST_NUMERICAL_PRECISION_IN_ATTN: os.environ.get("MLPERF_ATTN_PRECISION", ""),
+        mllogger.constants.LOWEST_NUMERICAL_PRECISION_IN_COMM: os.environ.get("MLPERF_COMM_PRECISION", ""),
         # custom
         "target_accuracy": config.custom.target_log_ppl,
     }

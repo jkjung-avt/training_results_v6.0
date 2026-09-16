@@ -13,3 +13,7 @@ export NVTE_NVFP4_DISABLE_2D_QUANTIZATION=0
 
 # FP8 attention recipe
 export NVTE_DPA_FP8_RECIPE="Float8CurrentScaling"
+
+export MLPERF_LINEAR_PRECISION="nvfp4"
+export MLPERF_ATTN_PRECISION="fp8"
+export MLPERF_COMM_PRECISION="nvfp4"
