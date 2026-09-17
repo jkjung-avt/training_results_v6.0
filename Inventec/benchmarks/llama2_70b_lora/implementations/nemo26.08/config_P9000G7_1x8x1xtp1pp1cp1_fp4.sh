@@ -7,7 +7,7 @@ source $(dirname ${BASH_SOURCE[0]})/config_common_fp4.sh
 export PMIX_MCA_psec=^munge
 
 # hyperparameters
-export MAX_STEPS=450
+export MAX_STEPS=500
 export LR=0.00075
 export MINIBS=1
 export CP=1
