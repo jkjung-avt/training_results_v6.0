@@ -32,7 +32,7 @@ export MOE_GROUPED_GEMM=True
 export MOE_PERMUTE_FUSION=True
 export MOE_ROUTER_FUSION=True
 
-export LR=0.00045
+export LR=0.0005
 export VAL_CHECK_INTERVAL=512
 export LR_WARMUP_STEPS=256
 
