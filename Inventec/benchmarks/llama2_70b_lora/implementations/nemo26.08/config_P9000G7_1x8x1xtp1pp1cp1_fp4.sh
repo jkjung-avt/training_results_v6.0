@@ -8,7 +8,7 @@ export PMIX_MCA_psec=^munge
 
 # hyperparameters
 export MAX_STEPS=500
-export LR=0.00075
+export LR=0.0007
 export MINIBS=1
 export CP=1
 export MCORE_CUDA_GRAPH=1
