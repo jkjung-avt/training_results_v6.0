@@ -1,0 +1,24 @@
+# MD5 checksums for the preprocessed yambda-5b dataset.
+#
+# Format: standard `md5sum` output, paths relative to ${DLRM_DATA_PATH}:
+#
+#   cd "${DLRM_DATA_PATH}"
+#   md5sum processed_5b/train_sessions.parquet processed_5b/test_events.parquet \
+#          processed_5b/session_index.parquet processed_5b/item_popularity.npy \
+#          processed_5b/split_meta.json \
+#          shared_metadata/artist_item_mapping.parquet \
+#          shared_metadata/album_item_mapping.parquet \
+#     > <repo>/md5sums_yambda_5b_processed.txt
+#
+# Pin from the canonical staged artifact (preprocessing tie order is not
+# guaranteed stable across polars versions). Until pinned, verify_dataset.sh
+# falls back to a layout check.
+#
+# TODO: replace the lines below with real md5 hashes.
+TODO_GENERATE_HASH  processed_5b/train_sessions.parquet
+TODO_GENERATE_HASH  processed_5b/test_events.parquet
+TODO_GENERATE_HASH  processed_5b/session_index.parquet
+TODO_GENERATE_HASH  processed_5b/item_popularity.npy
+TODO_GENERATE_HASH  processed_5b/split_meta.json
+TODO_GENERATE_HASH  shared_metadata/artist_item_mapping.parquet
+TODO_GENERATE_HASH  shared_metadata/album_item_mapping.parquet

@@ -1,0 +1,29 @@
+# provides slurm2pytorch, mlperf-sysjson.sh and mountcheck used by run.sub
+git+https://github.com/NVIDIA/mlperf-common.git@training-v6.1-rc0
+
+# torch/triton come from the container; torch-adjacent pins are installed
+# --no-deps in the Dockerfile
+
+# stock polars overflows its 32-bit row index on yambda-5b (>4.29B rows)
+polars-u64-idx==1.33.1
+gin-config==0.5.0
+absl-py==2.1.0
+pandas==2.2.3
+pyarrow==17.0.0
+xxhash==3.5.0
+datasets==3.2.0
+huggingface_hub==0.27.0
+tensorboard==2.19.0
+pyre-extensions==0.0.32
+iopath==0.1.10
+typing-inspect==0.9.0
+psutil==6.1.0
+tqdm==4.67.1
+# >= not ==: the container ships a debian-owned PyYAML that pip cannot uninstall
+pyyaml>=6.0.1
+pybind11==2.13.6
+lightning-utilities==0.11.9
+
+# import-time deps of tensordict (installed --no-deps, imported by torchrec)
+orjson==3.10.15
+cloudpickle==3.1.1
